@@ -118,9 +118,33 @@ equal the result will be available on the `answer property`.
 
 ## API
 
-### constants
+### properties
 
-#### e
+#### entry
+
+A read only property that gives the current entry to the calculator, attempting
+to set the property will simply return the previous value.
+
+#### answer
+
+A read only property that gives the current answer, attempting
+to set the property will simply return the previous value.
+
+#### v1
+
+A read only property that gives the current number stored in variable 1 to,
+attempting to set the property will simply return the previous value.
+
+#### v2
+
+A read only property that gives the current number stored in variable 1 to,
+attempting to set the property will simply return the previous value.
+
+### methods
+
+#### constants
+
+##### e
 
 Eulers constant.
 
@@ -129,7 +153,7 @@ calc.e();
 console.log(calc.entry); // e
 ```
 
-#### pi
+##### pi
 
 Ratio of a circle's circumference to it's diameter.
 
@@ -138,7 +162,7 @@ calc.pi();
 console.log(calc.entry); // pi
 ```
 
-#### phi
+##### phi
 
 
 The Holden Ratio
@@ -148,7 +172,7 @@ calc.phi();
 console.log(calc.entry); // phi
 ```
 
-#### py
+##### py
 
 The square root of 2, or the pythagorean constant.
 
@@ -197,3 +221,4 @@ calc.addDecimal();
 calc.addNumber(1);
 console.log(calc.entry) // 1.11
 ```
+
