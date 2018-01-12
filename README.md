@@ -394,3 +394,19 @@ The square root of 2, or the pythagorean constant.
 calc.py();
 console.log(calc.entry); // py
 ```
+
+## Scripts
+
+#### Testing
+To run mocha/chai tests.
+`npm run test`
+
+#### Examples
+To run the main example.
+`npm run ex`
+
+To run all examples.
+`npm run exAll`
+
+## License
+StateCalc.js is released under the MIT license.
