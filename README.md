@@ -142,45 +142,6 @@ attempting to set the property will simply return the previous value.
 
 ### methods
 
-#### constants
-
-##### e
-
-Eulers constant.
-
-```javascript
-calc.e();
-console.log(calc.entry); // e
-```
-
-##### pi
-
-Ratio of a circle's circumference to it's diameter.
-
-```javascript
-calc.pi();
-console.log(calc.entry); // pi
-```
-
-##### phi
-
-
-The Holden Ratio
-
-```javascript
-calc.phi();
-console.log(calc.entry); // phi
-```
-
-##### py
-
-The square root of 2, or the pythagorean constant.
-
-```javascript
-calc.py();
-console.log(calc.entry); // py
-```
-
 ### addNumber
 
 The add number function takes an interger (will floor floats) and adds it
@@ -222,3 +183,214 @@ calc.addNumber(1);
 console.log(calc.entry) // 1.11
 ```
 
+### negate
+
+Negates the current entry.
+
+```javascript
+calc.addNumber(1);
+console.log(calc.entry) // 1
+calc.negate()
+console.log(calc.entry) // -1
+```
+
+### pct
+
+Turns the current entry into a percent (divides by 100).
+
+```javascript
+calc.addNumber(1);
+console.log(calc.entry) // 1
+calc.pct()
+console.log(calc.entry) // .01
+calc.pct()
+console.log(calc.entry) // .0001
+```
+
+### rand
+
+Generates a random number between 0 and 1 and stores it in the entry.
+
+```javascript
+calc.rand();
+console.log(calc.entry) // random
+```
+
+### c
+
+Will clear all internal state
+
+```javascript
+calc.addNumber(1);
+calc.equal();
+
+console.log(calc.entry); // 1
+console.log(calc.answer); // 1
+
+calc.c();
+console.log(calc.entry); // 0
+console.log(calc.answer); // 0
+```
+
+### ce
+
+Will clear current entry.
+
+```javascript
+calc.addNumber(1);
+calc.equal();
+
+console.log(calc.entry); // 1
+console.log(calc.answer); // 1
+
+calc.ce();
+console.log(calc.entry); // 0
+console.log(calc.answer); // 1
+```
+
+### setv1
+
+Takes current answer and saves it in variable 1.
+
+```javascript
+calc.addNumber(1);
+calc.equal();
+calc.setv1();
+console.log(calc.v1);
+```
+
+### setv2
+
+Takes current answer and saves it in variable 2.
+
+```javascript
+calc.addNumber(1);
+calc.equal();
+calc.setv2();
+console.log(calc.v2);
+```
+
+### recv1
+
+Takes variable one and recalls it, replacing current entry.
+
+```javascript
+calc.addNumber(1);
+calc.equal();
+calc.setv1();
+console.log(calc.v1);
+calc.ce();
+console.log(calc.entry);
+calc.recv1();
+console.log(calc.entry);
+```
+
+### equal
+
+The equal operates differently depending on the current state of the calculator.
+If no number is entered, equal doesn't do anything. If a number is entered and
+no function is selected, equal transfers the value of the current entry to the
+answer. If a number is entered and a unary function is selected, equal is
+automatically called internally. If a number is entered and a binary function
+is selected, equal needs to be called manually after an additional number is
+entered. Calling equal multiples times in a row re-applies the previous
+function. Reapplications are always applied to the last parameter. If a number
+is entered and a binary function is selected and equal is called without adding
+an additional number, the function is applied using the current entry as
+both operands.
+
+```javascript
+calc.addNumber(1);
+calc.equal();
+console.log(calc.entry);  // 1
+console.log(calc.answer); // 1
+```
+
+### func
+
+The `func` method allows us to select a function using a string object. Every
+function that can be accessed using the `func` has also been dynamically applied
+to the object itself. That is, calling `calc.func("plus")` or `calc.plus()`
+gives the same result. The available functions are:
+
+**Unary Operations**
+- exp   (exponential)
+- pw2   (power of two)
+- pw10  (power of ten)
+- ln    (natural log)
+- sin   (sin)
+- cos   (cos)
+- tan   (tan)
+- sqrt  (square root)
+- qrt   (cubed root)
+- log   (log base 2)
+- vert  (1/x)
+
+**Binary Operations**
+- plus  (+, addition)
+- minus (-, subtraction)
+- div   (/, division)
+- mult  (*, mult)
+
+```javascript
+addNumber("2", stateCalc);
+stateCalc.func("plus");
+addNumber("2", stateCalc);
+stateCalc.equal();
+console.log(stateCalc.answer); // 4
+```
+
+### dynamically added functions
+
+As stated in the `func` section, all internal math functions can be called using
+their name as a method on StateCalc. That is, every method from `exp` to `mult`
+is also available as a method directly on the calculator object, with the same
+name as would be passed to the `func` method. hat is, calling
+`calc.func("plus")` or `calc.plus()` gives the same result.
+
+```javascript
+addNumber("2", stateCalc);
+stateCalc.plus();
+addNumber("2", stateCalc);
+stateCalc.equal();
+console.log(stateCalc.answer); // 4
+```
+
+#### constants
+
+##### e
+
+Eulers constant.
+
+```javascript
+calc.e();
+console.log(calc.entry); // e
+```
+
+##### pi
+
+Ratio of a circle's circumference to it's diameter.
+
+```javascript
+calc.pi();
+console.log(calc.entry); // pi
+```
+
+##### phi
+
+
+The Golden Ratio
+
+```javascript
+calc.phi();
+console.log(calc.entry); // phi
+```
+
+##### py
+
+The square root of 2, or the pythagorean constant.
+
+```javascript
+calc.py();
+console.log(calc.entry); // py
+```

@@ -5,7 +5,7 @@
   "main": "statecalc.js",
   "scripts": {
     "test": "mocha test",
-    "ex": "node ex/main-example.js",
+    "ex": "node ex/ex01-main-ex.js",
     "exAll": "node ex/runAll.js"
   },
   "repository": {
