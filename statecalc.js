@@ -25,11 +25,11 @@ class StateCalc {
     this[CLASS_SYMBOL] = {
       entry: "0",
       answer: 0,
-      storedValue: null,
       numberEntered: false,
       decimalAdded: false,
       answerFunction: null,
       binOp: false,
+      eqLast: false,
       error: false,
       v1: null,
       v2: null
@@ -48,6 +48,7 @@ class StateCalc {
 
     this[CLASS_SYMBOL].binaryOperation = (func) => {
       if (!this[CLASS_SYMBOL].numberEntered) return;
+      this[CLASS_SYMBOL].eqLast = false;
       let fn = this[CLASS_SYMBOL].answerFunction;
       let num;
       if (this[CLASS_SYMBOL].answer) {
@@ -78,20 +79,20 @@ class StateCalc {
     return this[CLASS_SYMBOL].answer;
   }
 
-  get stored() {
-    return this[CLASS_SYMBOL].storedValue;
+  get v1() {
+    return this[CLASS_SYMBOL].v1;
   }
 
-  set stored(e) {
-    return this[CLASS_SYMBOL].storedValue;
+  set v1(e) {
+    return this[CLASS_SYMBOL].v1;
   }
 
-  get error() {
-    return this[CLASS_SYMBOL].error;
+  get v2() {
+    return this[CLASS_SYMBOL].v2;
   }
 
-  set error(e) {
-    return this[CLASS_SYMBOL].error;
+  set v2(e) {
+    return this[CLASS_SYMBOL].v2;
   }
 
   invert() {
@@ -100,30 +101,42 @@ class StateCalc {
   }
 
   e() {
+    this[CLASS_SYMBOL].numberEntered = true;
+    this[CLASS_SYMBOL].eqLast = false;
     this[CLASS_SYMBOL].entry = Math.E + "";
   }
 
   pi() {
+    this[CLASS_SYMBOL].numberEntered = true;
+    this[CLASS_SYMBOL].eqLast = false;
     this[CLASS_SYMBOL].entry = Math.PI + "";
   }
 
   phi() {
+    this[CLASS_SYMBOL].numberEntered = true;
+    this[CLASS_SYMBOL].eqLast = false;
     this[CLASS_SYMBOL].entry = 1.6180339887498948482 + "";
   }
 
   py() {
+    this[CLASS_SYMBOL].numberEntered = true;
+    this[CLASS_SYMBOL].eqLast = false;
     this[CLASS_SYMBOL].entry = Math.sqrt(2) + "";
   }
 
   pct() {
+    this[CLASS_SYMBOL].eqLast = false;
     this[CLASS_SYMBOL].entry = ((this[CLASS_SYMBOL].entry - 0) / 100) + "";
   }
 
   rand() {
+    this[CLASS_SYMBOL].numberEntered = true;
+    this[CLASS_SYMBOL].eqLast = false;
     this[CLASS_SYMBOL].entry = Math.random() + "";
   }
 
   ce() {
+    this[CLASS_SYMBOL].eqLast = false;
     this[CLASS_SYMBOL].entry = "0";
   }
 
@@ -136,12 +149,14 @@ class StateCalc {
   }
 
   recv1() {
+    this[CLASS_SYMBOL].eqLast = false;
     if(this[CLASS_SYMBOL].v1) {
       this[CLASS_SYMBOL].entry = this[CLASS_SYMBOL].v1 - 0;
     }
   }
 
   recv2() {
+    this[CLASS_SYMBOL].eqLast = false;
     if (this[CLASS_SYMBOL].v2) {
       this[CLASS_SYMBOL].entry = this[CLASS_SYMBOL].v2 - 0;
     }
@@ -156,6 +171,7 @@ class StateCalc {
       decimalAdded: false,
       answerFunction: null,
       binOp: false,
+      eqLast: false,
       error: false,
       v1: null,
       v2: null
@@ -164,6 +180,7 @@ class StateCalc {
 
   addNumber(num) {
     if (Math.floor(num) === NaN) return;
+    this[CLASS_SYMBOL].eqLast = false;
     if (this[CLASS_SYMBOL].binOp) {
       this[CLASS_SYMBOL].binOp = false;
       this[CLASS_SYMBOL].entry = "";
@@ -176,6 +193,7 @@ class StateCalc {
   }
 
   addDecimal() {
+    this[CLASS_SYMBOL].eqLast = false;
     if (this[CLASS_SYMBOL].decimalAdded) return;
     this[CLASS_SYMBOL].entry += ".";
     this[CLASS_SYMBOL].numberEntered = false;
@@ -187,7 +205,13 @@ class StateCalc {
     if (!this[CLASS_SYMBOL].answerFunction) {
       this[CLASS_SYMBOL].answer = this[CLASS_SYMBOL].entry - 0;
     } else {
-      let ans = this[CLASS_SYMBOL].answerFunction(this[CLASS_SYMBOL].entry - 0);
+      let ans;
+      if (this[CLASS_SYMBOL].eqLast) {
+        ans = this[CLASS_SYMBOL].answerFunction(this[CLASS_SYMBOL].answer - 0);
+      } else {
+        this[CLASS_SYMBOL].eqLast = true;
+        ans = this[CLASS_SYMBOL].answerFunction(this[CLASS_SYMBOL].entry - 0);
+      }
       if ((ans - 0) === NaN) {
         this[CLASS_SYMBOL].error = true;
         this[CLASS_SYMBOL].answer = null;

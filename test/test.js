@@ -99,12 +99,57 @@ describe("statecalc", function() {
       stateCalc.py();
       chai.expect(stateCalc.entry).to.equal(Math.sqrt(2));
     })
+    it("check functions on constants", function () {
+      let stateCalc = new StateCalc();
+      stateCalc.py();
+      stateCalc.exp();
+      chai.expect(stateCalc.entry).to.equal(Math.exp(Math.sqrt(2)));
+    })
     it("check pct works", function () {
       let stateCalc = new StateCalc();
       chai.expect(stateCalc.entry).to.be.equal(0);
       addNumber("2", stateCalc);
       stateCalc.pct();
       chai.expect(stateCalc.entry).to.equal(2 / 100);
+    })
+    it("check multiple equals binary", function () {
+      let stateCalc = new StateCalc();
+      chai.expect(stateCalc.entry).to.be.equal(0);
+      addNumber("2", stateCalc);
+      stateCalc.plus();
+      addNumber("2", stateCalc);
+
+      stateCalc.equal();
+      chai.expect(stateCalc.answer).to.be.equal(4);
+
+      stateCalc.equal();
+      chai.expect(stateCalc.answer).to.be.equal(6);
+
+      stateCalc.equal();
+      chai.expect(stateCalc.answer).to.be.equal(8);
+
+      stateCalc.qrt();
+      chai.expect(stateCalc.answer).to.be.equal(2);
+
+      stateCalc.exp();
+      chai.expect(stateCalc.answer).to.be.equal(Math.exp(2));
+
+      stateCalc.exp();
+      chai.expect(stateCalc.answer).to.be.equal(Math.exp(Math.exp(2)));
+    })
+    it("check multiple equals unary", function () {
+      let stateCalc = new StateCalc();
+      chai.expect(stateCalc.entry).to.be.equal(0);
+      addNumber("2", stateCalc);
+      stateCalc.pw2();
+
+      chai.expect(stateCalc.answer).to.be.equal(4);
+
+      stateCalc.equal();
+      chai.expect(stateCalc.answer).to.be.equal(16);
+
+      stateCalc.equal();
+      chai.expect(stateCalc.answer).to.be.equal(65536);
     })
     it("check recall", function () {
       let stateCalc = new StateCalc();
