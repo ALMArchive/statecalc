@@ -64,11 +64,13 @@ class StateCalc {
   }
 
   get entry() {
-    return this[CLASS_SYMBOL].entry - 0;
+    let val = this[CLASS_SYMBOL].entry - 0;
+    return val || 0;
   }
 
   set entry(e) {
-    return this[CLASS_SYMBOL].entry - 0;
+    let val = this[CLASS_SYMBOL].entry - 0;
+    return val || 0;
   }
 
   get answer() {
@@ -95,7 +97,7 @@ class StateCalc {
     return this[CLASS_SYMBOL].v2;
   }
 
-  invert() {
+  negate() {
     let val = this[CLASS_SYMBOL].entry - 0;
     this[CLASS_SYMBOL].entry = (-1 * val) + "";
   }
@@ -135,6 +137,22 @@ class StateCalc {
     this[CLASS_SYMBOL].entry = Math.random() + "";
   }
 
+  c() {
+    this[CLASS_SYMBOL] = {
+      entry: "0",
+      answer: 0,
+      storedValue: null,
+      numberEntered: false,
+      decimalAdded: false,
+      answerFunction: null,
+      binOp: false,
+      eqLast: false,
+      error: false,
+      v1: null,
+      v2: null
+    }
+  }
+
   ce() {
     this[CLASS_SYMBOL].eqLast = false;
     this[CLASS_SYMBOL].entry = "0";
@@ -162,24 +180,9 @@ class StateCalc {
     }
   }
 
-  c() {
-    this[CLASS_SYMBOL].entry = {
-      entry: "0",
-      answer: 0,
-      storedValue: null,
-      numberEntered: false,
-      decimalAdded: false,
-      answerFunction: null,
-      binOp: false,
-      eqLast: false,
-      error: false,
-      v1: null,
-      v2: null
-    }
-  };
-
   addNumber(num) {
     if (Math.floor(num) === NaN) return;
+    if(this[CLASS_SYMBOL].eqLast) this[CLASS_SYMBOL].entry = "";
     this[CLASS_SYMBOL].eqLast = false;
     if (this[CLASS_SYMBOL].binOp) {
       this[CLASS_SYMBOL].binOp = false;

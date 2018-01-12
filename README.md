@@ -2,12 +2,34 @@
 
 ## About
 
-**StateCalc** is a state based calculator interface that operates how
+*StateCalc* is a state based calculator interface that operates how
 you would expect a desktop or handled calculator to work. Digits are entered
 sequentially and can be processed with a handful of simple math functions.
 
-**StateCalc** was intended to power gui calculators, but it is appropriate for any
+*StateCalc* was intended to power gui calculators, but it is appropriate for any
 sequentially read sets of number or applied functions.
+
+## Main Example
+
+```javascript
+"use strict";
+const StateCalc = require("../statecalc.js");
+
+let calc = new StateCalc();
+
+calc.addNumber(2);
+calc.pw2();
+
+calc.plus();
+calc.addNumber(2);
+calc.equal();
+
+calc.plus();
+calc.addNumber(2);
+calc.equal();
+
+console.log(calc.answer); // 8
+```
 
 ## Implementation Details
 
@@ -66,6 +88,8 @@ gives access to the respective private properties.
 
 ## Basic Program Flow
 
+### Entering a Number
+
 After constructing or hard clearing a `StateCalc` you must enter a number before
 you can perform any futher operations. You have several choices for how to enter
 a number, you can use one of the 4 constants, `e`, `pi`, `phi` or the
@@ -77,7 +101,99 @@ Numbers are entered sequentially, just like in a desktop calculator. Float
 numbers can be entered using the `decimalFunction`, which will only execute once
 for any operand preventing the creation of non-numbers.
 
+### Calling Functions
+
+#### Unary Function
+
 After a number is entered, you can use any of the unary functions listed above
 and a result will be available on the answer property.
 
+#### Binary Functions
 
+After calling a binary function you must either add another number, or call
+`equal`. Calling equal before adding another number will apply the function
+to the previous entry. If equal is called after entering a another number then
+the function is applied to the current and previous entry. Aftering calling
+equal the result will be available on the `answer property`.
+
+## API
+
+### constants
+
+#### e
+
+Eulers constant.
+
+```javascript
+calc.e();
+console.log(calc.entry); // e
+```
+
+#### pi
+
+Ratio of a circle's circumference to it's diameter.
+
+```javascript
+calc.pi();
+console.log(calc.entry); // pi
+```
+
+#### phi
+
+
+The Holden Ratio
+
+```javascript
+calc.phi();
+console.log(calc.entry); // phi
+```
+
+#### py
+
+The square root of 2, or the pythagorean constant.
+
+```javascript
+calc.py();
+console.log(calc.entry); // py
+```
+
+### addNumber
+
+The add number function takes an interger (will floor floats) and adds it
+to the current entry. This was intended to add digits sequentially like a
+calculator, but it is possible to enter the entire integer or decimal portion at
+once.
+
+For example the following are equivalent:
+
+```javascript
+calc.addNumber(100);
+calc.addDecimal();
+calc.addNumber(123);
+console.log(calc.entry) // "100.123"
+
+calc.addNumber(1);
+calc.addNumber(0);
+calc.addNumber(0);
+calc.addDecimal();
+calc.addNumber(1);
+calc.addNumber(2);
+calc.addNumber(3);
+console.log(calc.entry) // "100.123"
+```
+
+### addDecimal
+
+Adds a decimal to the current entered number, will not allow multiple decimals
+to be added to the same number.
+
+```javascript
+calc.addNumber(1);
+calc.addDecimal();
+calc.addNumber(1);
+console.log(calc.entry) // 1.1
+calc.addNumber(1);
+calc.addDecimal();
+calc.addNumber(1);
+console.log(calc.entry) // 1.11
+```

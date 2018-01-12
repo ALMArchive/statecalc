@@ -43,7 +43,8 @@ describe("statecalc", function() {
       let stateCalc = new StateCalc();
       chai.expect(stateCalc.entry).to.be.equal(0);
       chai.expect(stateCalc.answer).to.be.equal(0);
-      chai.expect(stateCalc.stored).to.be.null;
+      chai.expect(stateCalc.v1).to.be.null;
+      chai.expect(stateCalc.v2).to.be.null;
     })
     it("addNumber should give correct entry value", function () {
       for(const num of numbers) {
@@ -70,12 +71,12 @@ describe("statecalc", function() {
         chai.expect(stateCalc.answer).to.equal(num - 0);
       }
     })
-    it("check invert works", function () {
+    it("check negate works", function () {
       for (const num of numbers) {
         let stateCalc = new StateCalc();
         chai.expect(stateCalc.entry).to.be.equal(0);
         addNumber(num, stateCalc);
-        stateCalc.invert();
+        stateCalc.negate();
         chai.expect(stateCalc.entry).to.equal(-1 * num);
       }
     })
