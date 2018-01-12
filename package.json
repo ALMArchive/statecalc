@@ -1,0 +1,30 @@
+{
+  "name": "statecalc",
+  "version": "0.1.0",
+  "description": "A simple state based calculator that mimics functionality of common desk or system calculators.",
+  "main": "statecalc.js",
+  "scripts": {
+    "test": "mocha test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/ALMaclaine/statecalc.git"
+  },
+  "keywords": [
+    "State",
+    "Simple",
+    "Calculator",
+    "Desk",
+    "Calc"
+  ],
+  "author": "Alessandro Maclaine",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/ALMaclaine/statecalc/issues"
+  },
+  "homepage": "https://github.com/ALMaclaine/statecalc#readme",
+  "dependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^4.1.0"
+  }
+}
