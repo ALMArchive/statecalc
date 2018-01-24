@@ -18,6 +18,7 @@ const StateCalc = require("../statecalc.js");
 let calc = new StateCalc();
 
 calc.addNumber(2);
+calc.equal();
 calc.pw2();
 
 calc.plus();
@@ -55,11 +56,8 @@ The other functions do not contribute to flow of state in the application.
 
 All internal calculations are performed using curied partial functions. The
 principle difference between binary and unary operations is unary operations
-automatically call the equal function which calculates the result of a set of
-operations and stores the result in the answer variable.
+are applied to the answer slot alone and are not impacted by the entry value.
 
-Binary functions, in contrast, require an additional operand and a call to the
-equal function.
 
 ### Equal
 
@@ -105,8 +103,9 @@ for any operand preventing the creation of non-numbers.
 
 #### Unary Function
 
-After a number is entered, you can use any of the unary functions listed above
-and a result will be available on the answer property.
+After a number is entered and equal set to place it into the answer slot, you
+can use any of the unary functions listed above and a result will be available
+on the answer property.
 
 #### Binary Functions
 
@@ -364,7 +363,7 @@ Eulers constant.
 
 ```javascript
 calc.e();
-console.log(calc.entry); // e
+console.log(calc.answer); // e
 ```
 
 ##### pi
@@ -373,7 +372,7 @@ Ratio of a circle's circumference to it's diameter.
 
 ```javascript
 calc.pi();
-console.log(calc.entry); // pi
+console.log(calc.answer); // pi
 ```
 
 ##### phi
@@ -383,7 +382,7 @@ The Golden Ratio
 
 ```javascript
 calc.phi();
-console.log(calc.entry); // phi
+console.log(calc.answer); // phi
 ```
 
 ##### py
@@ -392,7 +391,7 @@ The square root of 2, or the pythagorean constant.
 
 ```javascript
 calc.py();
-console.log(calc.entry); // py
+console.log(calc.answer); // py
 ```
 
 ## Scripts
