@@ -41,7 +41,6 @@ class StateCalc {
     }
 
     classObj.binaryOperation = function () {
-      // this[CLASS_SYMBOL].eqLast = false;
       let num = this[CLASS_SYMBOL].answer - 0;
       this[CLASS_SYMBOL].curryAnsFunc(num);
       this[CLASS_SYMBOL].numberEntered = false;
@@ -49,19 +48,37 @@ class StateCalc {
     }
 
     classObj.curryAnsFunc = function (val) {
+      const funcName = this[CLASS_SYMBOL].answerFunction;
       let fn;
-      if (this[CLASS_SYMBOL].answerFunction) {
-        fn = ourFuncs[this[CLASS_SYMBOL].answerFunction].func;
+      if (funcName) {
+        fn = ourFuncs[funcName].func;
       } else {
         fn = ((x) => x);
       }
-      let tmpFunc = (n) => fn(val, n);
+
+      let tmpFunc;
+      if (funcName === "minus" || funcName === "div") {
+        tmpFunc = (n) => fn(n, val);
+      } else {
+        tmpFunc = (n) => fn(val, n);
+      }
       this[CLASS_SYMBOL].curriedFunction = tmpFunc;
+    }
+
+    classObj.insertSpecial = function(val) {
+      this[CLASS_SYMBOL].eqLast = false;
+      if (this[CLASS_SYMBOL].binOp && !this[CLASS_SYMBOL].eqLast) this.equal();
+      this[CLASS_SYMBOL].entry = val + "";
+      if (this[CLASS_SYMBOL].answer === 0) {
+        this.equal();
+        this[CLASS_SYMBOL].entry = "0";
+      }
     }
 
     classObj.unaryOperation = classObj.unaryOperation.bind(this);
     classObj.binaryOperation = classObj.binaryOperation.bind(this);
     classObj.curryAnsFunc = classObj.curryAnsFunc.bind(this);
+    classObj.insertSpecial = classObj.insertSpecial.bind(this);
 
     this[CLASS_SYMBOL] = classObj;
 
@@ -111,34 +128,31 @@ class StateCalc {
   }
 
   e() {
-    this[CLASS_SYMBOL].eqLast = false;
-    this[CLASS_SYMBOL].answer = Math.E + "";
+    this[CLASS_SYMBOL].insertSpecial(Math.E);
   }
 
   pi() {
-    this[CLASS_SYMBOL].eqLast = false;
-    this[CLASS_SYMBOL].answer = Math.PI + "";
+    this[CLASS_SYMBOL].insertSpecial(Math.PI);
   }
 
   phi() {
-    this[CLASS_SYMBOL].eqLast = false;
-    this[CLASS_SYMBOL].answer = 1.6180339887498948482 + "";
+    this[CLASS_SYMBOL].insertSpecial(1.6180339887498948482);
   }
 
   py() {
-    this[CLASS_SYMBOL].eqLast = false;
-    this[CLASS_SYMBOL].answer = Math.sqrt(2) + "";
+    this[CLASS_SYMBOL].insertSpecial(Math.sqrt(2));
+  }
+  
+  rand() {
+    this[CLASS_SYMBOL].insertSpecial(Math.random());
   }
 
   pct() {
-    this[CLASS_SYMBOL].eqLast = false;
     this[CLASS_SYMBOL].answer = ((this[CLASS_SYMBOL].answer - 0) / 100) + "";
+    this[CLASS_SYMBOL].entry = this[CLASS_SYMBOL].answer;
+    this[CLASS_SYMBOL].curryAnsFunc(this[CLASS_SYMBOL].answer);
   }
 
-  rand() {
-    this[CLASS_SYMBOL].eqLast = false;
-    this[CLASS_SYMBOL].entry = Math.random() + "";
-  }
 
   c() {
     this[CLASS_SYMBOL] = {
@@ -154,7 +168,8 @@ class StateCalc {
       v2: null,
       binaryOperation: this[CLASS_SYMBOL].binaryOperation,
       unaryOperation: this[CLASS_SYMBOL].unaryOperation,
-      curryAnsFunc: this[CLASS_SYMBOL].curryAnsFunc
+      curryAnsFunc: this[CLASS_SYMBOL].curryAnsFunc,
+      insertSpecial: this[CLASS_SYMBOL].insertSpecial
     };
   }
 
@@ -212,16 +227,16 @@ class StateCalc {
   equal() {
     let ans;
     if (this[CLASS_SYMBOL].eqLast) {
-      this[CLASS_SYMBOL].curryAnsFunc(this[CLASS_SYMBOL].answer - 0);
-      ans = this[CLASS_SYMBOL].curriedFunction(this[CLASS_SYMBOL].entry - 0);
-    } else if (this[CLASS_SYMBOL].numberEntered) {
-      if (this[CLASS_SYMBOL].answerFunction === "div" || this[CLASS_SYMBOL].answerFunction === "minus") {
+      if (this[CLASS_SYMBOL].answerFunction === "minus" || this[CLASS_SYMBOL].answerFunction === "div") {
+        this[CLASS_SYMBOL].curryAnsFunc((this[CLASS_SYMBOL].entry - 0));
+        ans = this[CLASS_SYMBOL].curriedFunction(this[CLASS_SYMBOL].answer - 0);
+      } else {
         this[CLASS_SYMBOL].curryAnsFunc(this[CLASS_SYMBOL].answer - 0);
         ans = this[CLASS_SYMBOL].curriedFunction(this[CLASS_SYMBOL].entry - 0);
-      } else {
-        this[CLASS_SYMBOL].curryAnsFunc(this[CLASS_SYMBOL].entry - 0);
-        ans = this[CLASS_SYMBOL].curriedFunction(this[CLASS_SYMBOL].answer - 0);
       }
+    } else if (this[CLASS_SYMBOL].numberEntered) {
+      this[CLASS_SYMBOL].curryAnsFunc(this[CLASS_SYMBOL].entry - 0);
+      ans = this[CLASS_SYMBOL].curriedFunction(this[CLASS_SYMBOL].answer - 0);
     } else {
       this[CLASS_SYMBOL].answer = (this[CLASS_SYMBOL].entry - 0);
       ans = this[CLASS_SYMBOL].curriedFunction(this[CLASS_SYMBOL].answer - 0);

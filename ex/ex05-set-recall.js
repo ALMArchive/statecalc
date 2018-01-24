@@ -4,7 +4,6 @@ const StateCalc = require("../statecalc.js");
 let calc = new StateCalc();
 
 calc.e();
-calc.equal();
 calc.setv1();
 calc.setv2();
 

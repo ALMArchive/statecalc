@@ -4,6 +4,7 @@ const StateCalc = require("../statecalc.js");
 let calc = new StateCalc();
 
 calc.addNumber(2);
+calc.equal();
 calc.pw2();
 
 calc.plus();

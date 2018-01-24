@@ -4,7 +4,7 @@ const StateCalc = require("../statecalc.js");
 let calc = new StateCalc();
 
 calc.e();
-console.log(calc.entry) // e
+console.log(calc.answer) // e
 
 calc.pi();
 console.log(calc.entry) // pi
