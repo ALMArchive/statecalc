@@ -35,7 +35,7 @@ const biFuncs = {
   minus: (a, b) => a - b
 }
 
-const numbers = ["0000200031000.54000300000", "0059.0", "5.432", "0.540", "2.52", "065450", "9534.643", "12.526", "543.6234", "2342.43", "742.23", "877.623"];
+const numbers = ["0002031000.54000300000", "0059.0", "5.432", "0.540", "2.52", "065450", "9534.643", "12.526", "543.6234", "2342.43", "742.23", "877.623"];
 
 describe("statecalc", function() {
   describe("Tests", function() {
@@ -83,35 +83,36 @@ describe("statecalc", function() {
     it("check e works", function () {
       let stateCalc = new StateCalc();
       stateCalc.e();
-      chai.expect(stateCalc.entry).to.equal(Math.E);
+      chai.expect(stateCalc.answer).to.equal(Math.E);
     })
     it("check pi works", function () {
       let stateCalc = new StateCalc();
       stateCalc.pi();
-      chai.expect(stateCalc.entry).to.equal(Math.PI);
+      chai.expect(stateCalc.answer).to.equal(Math.PI);
     })
     it("check phi works", function () {
       let stateCalc = new StateCalc();
       stateCalc.phi();
-      chai.expect(stateCalc.entry).to.equal(1.6180339887498948482);
+      chai.expect(stateCalc.answer).to.equal(1.6180339887498948482);
     })
     it("check py works", function () {
       let stateCalc = new StateCalc();
       stateCalc.py();
-      chai.expect(stateCalc.entry).to.equal(Math.sqrt(2));
+      chai.expect(stateCalc.answer).to.equal(Math.sqrt(2));
     })
     it("check functions on constants", function () {
       let stateCalc = new StateCalc();
       stateCalc.py();
       stateCalc.exp();
-      chai.expect(stateCalc.entry).to.equal(Math.exp(Math.sqrt(2)));
+      chai.expect(stateCalc.answer).to.equal(Math.exp(Math.sqrt(2)));
     })
     it("check pct works", function () {
       let stateCalc = new StateCalc();
       chai.expect(stateCalc.entry).to.be.equal(0);
       addNumber("2", stateCalc);
+      stateCalc.equal();
       stateCalc.pct();
-      chai.expect(stateCalc.entry).to.equal(2 / 100);
+      chai.expect(stateCalc.answer).to.equal(2 / 100);
     })
     it("check multiple equals binary", function () {
       let stateCalc = new StateCalc();
@@ -138,18 +139,19 @@ describe("statecalc", function() {
       stateCalc.exp();
       chai.expect(stateCalc.answer).to.be.equal(Math.exp(Math.exp(2)));
     })
-    it("check multiple equals unary", function () {
+    it("check pressed unary", function () {
       let stateCalc = new StateCalc();
       chai.expect(stateCalc.entry).to.be.equal(0);
       addNumber("2", stateCalc);
+      stateCalc.equal();
       stateCalc.pw2();
 
       chai.expect(stateCalc.answer).to.be.equal(4);
 
-      stateCalc.equal();
+      stateCalc.pw2();
       chai.expect(stateCalc.answer).to.be.equal(16);
 
-      stateCalc.equal();
+      stateCalc.pw2();
       chai.expect(stateCalc.answer).to.be.equal(65536);
     })
     it("check recall", function () {
@@ -191,11 +193,12 @@ describe("statecalc", function() {
       let stateCalc = new StateCalc();
       for(let x = 0; x < 100; x++) {
         stateCalc.rand();
-        chai.expect(stateCalc.entry < 1 && stateCalc.entry !== last).to.be.true;
-        last = stateCalc.entry;
+        stateCalc.equal();
+        chai.expect(stateCalc.answer < 1 && stateCalc.answer !== last).to.be.true;
+        last = stateCalc.answer;
       }
       stateCalc.py();
-      chai.expect(stateCalc.entry).to.equal(Math.sqrt(2));
+      chai.expect(stateCalc.answer).to.equal(Math.sqrt(2));
     })
     it("check unary works", function () {
       for(const func in funcs) {
@@ -204,6 +207,7 @@ describe("statecalc", function() {
           chai.expect(stateCalc.entry).to.be.equal(0);
           addNumber(num, stateCalc);
           chai.expect(stateCalc.entry).to.be.equal(num - 0);
+          stateCalc.equal();
           stateCalc.func(func);
           chai.expect(stateCalc.answer).to.equal(funcs[func](num - 0));
         }
@@ -215,6 +219,7 @@ describe("statecalc", function() {
         let stateCalc = new StateCalc();
         chai.expect(stateCalc.entry).to.be.equal(0);
         addNumber(num, stateCalc);
+        stateCalc.equal();
         stateCalc.func("exp");
         let ans = Math.exp(num - 0);
         chai.expect(stateCalc.answer).to.equal(ans);
@@ -233,17 +238,20 @@ describe("statecalc", function() {
       }
     });
     it("check binary works", function () {
-      let nums = ["1", "1.5", "2", "3", "5", "10", "100", "101.15"];
+      let nums = ["1", "1.5", "2", "3", "5", "10"];
       for(const func in biFuncs) {
         for(const num of numbers) {
           for(const num2 of nums) {
             let stateCalc = new StateCalc();
             addNumber(num, stateCalc);
             chai.expect(stateCalc.entry).to.be.equal(num - 0);
+            stateCalc.equal();
             stateCalc.func(func);
             addNumber(num2, stateCalc);
             stateCalc.equal();
-            chai.expect(stateCalc.answer).to.be.equal(biFuncs[func](num - 0, num2 - 0));
+            let tmpEqual = biFuncs[func](num - 0, num2 - 0);
+            let tmpCalc = stateCalc.answer;
+            chai.expect(stateCalc.answer).to.be.equal(tmpEqual);
           }
         }
       }
