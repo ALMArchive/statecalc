@@ -4,9 +4,9 @@
   "description": "A simple state based calculator that mimics functionality of common desk or system calculators.",
   "main": "statecalc.js",
   "scripts": {
-    "test": "mocha test",
-    "ex": "node ex/ex01-main-ex.js",
-    "exAll": "node ex/runAll.js"
+    "test": "mocha -r @std/esm test",
+    "ex": "node -r @std/esm ex/ex01-main-ex.js",
+    "exAll": "node -r @std/esm ex/runAll.js"
   },
   "repository": {
     "type": "git",
@@ -25,8 +25,25 @@
     "url": "https://github.com/ALMaclaine/statecalc/issues"
   },
   "homepage": "https://github.com/ALMaclaine/statecalc#readme",
-  "dependencies": {
+  "devDependencies": {
+    "@std/esm": "^0.20.0",
+    "babel-core": "^6.26.0",
+    "babel-loader": "^7.1.2",
+    "babel-plugin-transform-object-rest-spread": "^6.26.0",
+    "babel-polyfill": "^6.26.0",
+    "babel-preset-env": "^1.6.1",
+    "babel-register": "^6.26.0",
+    "celebs": "^0.1.0",
     "chai": "^4.1.2",
-    "mocha": "^4.1.0"
+    "eslint": "^4.16.0",
+    "eslint-config-airbnb": "^16.1.0",
+    "eslint-loader": "^1.9.0",
+    "eslint-plugin-import": "^2.8.0",
+    "eslint-plugin-jsx-a11y": "^6.0.3",
+    "eslint-plugin-react": "^7.6.0",
+    "is": "^3.2.1",
+    "mocha": "^3.5.3",
+    "randexp": "^0.4.6",
+    "webpack": "^3.10.0"
   }
 }

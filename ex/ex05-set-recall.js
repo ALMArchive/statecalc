@@ -1,5 +1,6 @@
 "use strict";
-const StateCalc = require("../statecalc.js");
+
+import StateCalc from "../statecalc";
 
 let calc = new StateCalc();
 

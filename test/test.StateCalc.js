@@ -1,7 +1,7 @@
 "use strict";
 
-const chai     = require("chai");
-const StateCalc = require("../statecalc.js");
+import chai from "chai";
+import StateCalc from "../statecalc";
 
 function addNumber(num, stateCalc) {
   let digits = num.split("");

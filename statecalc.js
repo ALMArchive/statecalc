@@ -1,79 +1,76 @@
-"use strict"
-
-const CLASS_SYMBOL = Symbol("StateCalc Symbol");
+const CLASS_SYMBOL = Symbol('StateCalc Symbol');
 
 const ourFuncs = {
-  exp: { func: Math.exp, type: "u" },
-  pw2: { func: (n) => Math.pow(2, n), type: "u" },
-  pw10: { func: (n) => Math.pow(10, n), type: "u" },
-  ln: { func: Math.log, type: "u" },
-  sin: { func: Math.sin, type: "u" },
-  cos: { func: Math.cos, type: "u" },
-  tan: { func: Math.tan, type: "u" },
-  sqrt: { func: Math.sqrt, type: "u" },
-  qrt: { func: (n) => Math.pow(n, 1 / 3), type: "u" },
-  log: { func: Math.log2, type: "u" },
-  vert: { func: (n) => 1 / n, type: "u" },
-  plus: { func: (a, b) => a + b, type: "b" },
-  minus: { func: (b, a) => b - a, type: "b" },
-  div: { func: (b, a) => b / a, type: "b" },
-  mult: { func: (a, b) => a * b, type: "b" }
-}
+  exp: { func: Math.exp, type: 'u' },
+  pw2: { func: n => 2 ** n, type: 'u' },
+  pw10: { func: n => 10 ** n, type: 'u' },
+  ln: { func: Math.log, type: 'u' },
+  sin: { func: Math.sin, type: 'u' },
+  cos: { func: Math.cos, type: 'u' },
+  tan: { func: Math.tan, type: 'u' },
+  sqrt: { func: Math.sqrt, type: 'u' },
+  qrt: { func: n => n ** (1 / 3), type: 'u' },
+  log: { func: Math.log2, type: 'u' },
+  vert: { func: n => 1 / n, type: 'u' },
+  plus: { func: (a, b) => a + b, type: 'b' },
+  minus: { func: (b, a) => b - a, type: 'b' },
+  div: { func: (b, a) => b / a, type: 'b' },
+  mult: { func: (a, b) => a * b, type: 'b' },
+};
 
-class StateCalc {
+export default class StateCalc {
   constructor() {
-    let classObj = {
-      entry: "0",
+    const classObj = {
+      entry: '0',
       answer: 0,
       numberEntered: false,
       decimalAdded: false,
       answerFunction: null,
-      curriedFunction: (x) => x,
+      curriedFunction: x => x,
       binOp: false,
-      eqLast: false,
       eqLast: false,
       v1: null,
       v2: null,
     };
 
-    classObj.unaryOperation = function (func) {
+    classObj.unaryOperation = function unaryOperation(func) {
       this[CLASS_SYMBOL].answer = func(this[CLASS_SYMBOL].answer);
-    }
+    };
 
-    classObj.binaryOperation = function () {
-      let num = this[CLASS_SYMBOL].answer - 0;
+    classObj.binaryOperation = function binaryOperation() {
+      const num = this[CLASS_SYMBOL].answer - 0;
       this[CLASS_SYMBOL].curryAnsFunc(num);
       this[CLASS_SYMBOL].numberEntered = false;
       this[CLASS_SYMBOL].binOp = true;
-    }
+    };
 
-    classObj.curryAnsFunc = function (val) {
+    classObj.curryAnsFunc = function curryAnsFunc(val) {
       const funcName = this[CLASS_SYMBOL].answerFunction;
       let fn;
       if (funcName) {
         fn = ourFuncs[funcName].func;
       } else {
-        fn = ((x) => x);
+        fn = x => x;
       }
 
       let tmpFunc;
-      if (funcName === "minus" || funcName === "div") {
-        tmpFunc = (n) => fn(n, val);
+      if (funcName === 'minus' || funcName === 'div') {
+        tmpFunc = n => fn(n, val);
       } else {
-        tmpFunc = (n) => fn(val, n);
+        tmpFunc = n => fn(val, n);
       }
       this[CLASS_SYMBOL].curriedFunction = tmpFunc;
-    }
+    };
 
-    classObj.insertSpecial = function(val) {
+    classObj.insertSpecial = function insertSpecial(val) {
       this[CLASS_SYMBOL].eqLast = false;
       if (this[CLASS_SYMBOL].binOp && !this[CLASS_SYMBOL].eqLast) this.equal();
-      this[CLASS_SYMBOL].entry = val + "";
+      this[CLASS_SYMBOL].entry = val;
       if (this[CLASS_SYMBOL].answer === 0) {
         this.equal();
-        this[CLASS_SYMBOL].entry = "0";
+        this[CLASS_SYMBOL].entry = '0';
       }
-    }
+    };
 
     classObj.unaryOperation = classObj.unaryOperation.bind(this);
     classObj.binaryOperation = classObj.binaryOperation.bind(this);
@@ -83,18 +80,17 @@ class StateCalc {
     this[CLASS_SYMBOL] = classObj;
 
     // Add methods to object
-    for (const func in ourFuncs) {
-      this[func] = function () { this.func(func) };
-    }
+    /* eslint-disable no-return-assign */
+    Reflect.ownKeys(ourFuncs).map(e => this[e] = () => { this.func(e); });
   }
 
   get entry() {
-    let val = this[CLASS_SYMBOL].entry - 0;
+    const val = this[CLASS_SYMBOL].entry - 0;
     return val || 0;
   }
 
   set entry(e) {
-    let val = this[CLASS_SYMBOL].entry - 0;
+    const val = this[CLASS_SYMBOL].entry - 0;
     return val || 0;
   }
 
@@ -123,8 +119,8 @@ class StateCalc {
   }
 
   negate() {
-    let val = this[CLASS_SYMBOL].entry - 0;
-    this[CLASS_SYMBOL].entry = (-1 * val) + "";
+    const val = this[CLASS_SYMBOL].entry - 0;
+    this[CLASS_SYMBOL].entry = -1 * val;
   }
 
   e() {
@@ -142,13 +138,13 @@ class StateCalc {
   py() {
     this[CLASS_SYMBOL].insertSpecial(Math.sqrt(2));
   }
-  
+
   rand() {
     this[CLASS_SYMBOL].insertSpecial(Math.random());
   }
 
   pct() {
-    this[CLASS_SYMBOL].answer = ((this[CLASS_SYMBOL].answer - 0) / 100) + "";
+    this[CLASS_SYMBOL].answer = ((this[CLASS_SYMBOL].answer - 0) / 100);
     this[CLASS_SYMBOL].entry = this[CLASS_SYMBOL].answer;
     this[CLASS_SYMBOL].curryAnsFunc(this[CLASS_SYMBOL].answer);
   }
@@ -156,12 +152,12 @@ class StateCalc {
 
   c() {
     this[CLASS_SYMBOL] = {
-      entry: "0",
+      entry: '0',
       answer: 0,
       numberEntered: false,
       decimalAdded: false,
       answerFunction: null,
-      curriedFunction: (x) => x,
+      curriedFunction: x => x,
       binOp: false,
       eqLast: false,
       v1: null,
@@ -169,13 +165,13 @@ class StateCalc {
       binaryOperation: this[CLASS_SYMBOL].binaryOperation,
       unaryOperation: this[CLASS_SYMBOL].unaryOperation,
       curryAnsFunc: this[CLASS_SYMBOL].curryAnsFunc,
-      insertSpecial: this[CLASS_SYMBOL].insertSpecial
+      insertSpecial: this[CLASS_SYMBOL].insertSpecial,
     };
   }
 
   ce() {
     this[CLASS_SYMBOL].eqLast = false;
-    this[CLASS_SYMBOL].entry = "0";
+    this[CLASS_SYMBOL].entry = '0';
   }
 
   setv1() {
@@ -202,15 +198,17 @@ class StateCalc {
 
   addNumber(num) {
     if (Number.isNaN(num)) return;
-    if (this[CLASS_SYMBOL].binOp && !this[CLASS_SYMBOL].eqLast && !this[CLASS_SYMBOL].numberEntered) this.equal();
-    if (this[CLASS_SYMBOL].eqLast) this[CLASS_SYMBOL].entry = "0";
+    if (this[CLASS_SYMBOL].binOp
+      && !this[CLASS_SYMBOL].eqLast
+      && !this[CLASS_SYMBOL].numberEntered) this.equal();
+    if (this[CLASS_SYMBOL].eqLast) this[CLASS_SYMBOL].entry = '0';
     if (this[CLASS_SYMBOL].binOp || this[CLASS_SYMBOL].eqLast) {
       this[CLASS_SYMBOL].binOp = false;
-      this[CLASS_SYMBOL].entry = "";
+      this[CLASS_SYMBOL].entry = '';
       this[CLASS_SYMBOL].decimalAdded = false;
     }
     this[CLASS_SYMBOL].eqLast = false;
-    let numStr = (this[CLASS_SYMBOL].entry || "") + "";
+    let numStr = (this[CLASS_SYMBOL].entry || '');
     numStr += Math.floor(num);
     this[CLASS_SYMBOL].entry = numStr;
     this[CLASS_SYMBOL].numberEntered = true;
@@ -219,7 +217,7 @@ class StateCalc {
   addDecimal() {
     this[CLASS_SYMBOL].eqLast = false;
     if (this[CLASS_SYMBOL].decimalAdded) return;
-    this[CLASS_SYMBOL].entry += ".";
+    this[CLASS_SYMBOL].entry += '.';
     this[CLASS_SYMBOL].numberEntered = false;
     this[CLASS_SYMBOL].decimalAdded = true;
   }
@@ -227,7 +225,7 @@ class StateCalc {
   equal() {
     let ans;
     if (this[CLASS_SYMBOL].eqLast) {
-      if (this[CLASS_SYMBOL].answerFunction === "minus" || this[CLASS_SYMBOL].answerFunction === "div") {
+      if (this[CLASS_SYMBOL].answerFunction === 'minus' || this[CLASS_SYMBOL].answerFunction === 'div') {
         this[CLASS_SYMBOL].curryAnsFunc((this[CLASS_SYMBOL].entry - 0));
         ans = this[CLASS_SYMBOL].curriedFunction(this[CLASS_SYMBOL].answer - 0);
       } else {
@@ -250,14 +248,12 @@ class StateCalc {
 
   func(tmpFunc) {
     if (ourFuncs[tmpFunc]) {
-      if (ourFuncs[tmpFunc].type === "u") {
+      if (ourFuncs[tmpFunc].type === 'u') {
         this[CLASS_SYMBOL].unaryOperation(ourFuncs[tmpFunc].func);
-      } else if (ourFuncs[tmpFunc].type === "b") {
+      } else if (ourFuncs[tmpFunc].type === 'b') {
         this[CLASS_SYMBOL].answerFunction = tmpFunc;
         this[CLASS_SYMBOL].binaryOperation();
       }
     }
   }
 }
-
-module.exports = StateCalc;
