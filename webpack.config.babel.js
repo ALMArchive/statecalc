@@ -3,8 +3,7 @@ import path from "path";
 
 export default {
   entry: {
-    "statecalc": "./statecalc.js",
-    "statecalc.min": "./statecalc.js"
+    "statecalc": "./statecalc.js"
   },
   target: 'node',
   output: {
@@ -28,11 +27,5 @@ export default {
         use: ["eslint-loader"]
       }
     ]
-  },
-  plugins: [
-    new webpack.optimize.UglifyJsPlugin({
-      include: /\.min\.js$/,
-      minimize: true
-    })
-  ]
+  }
 };
