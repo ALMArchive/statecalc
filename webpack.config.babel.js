@@ -8,6 +8,8 @@ export default {
   },
   target: 'node',
   output: {
+    library: "someLibName",
+    libraryTarget: "umd",
     path: path.resolve(__dirname, "dist"),
     filename: "[name].js"
   },
