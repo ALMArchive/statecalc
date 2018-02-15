@@ -2,11 +2,16 @@
   "name": "statecalc",
   "version": "0.1.4",
   "description": "A simple state based calculator that mimics functionality of common desk or system calculators.",
-  "main": "statecalc.js",
+  "main": "dist/statecalc.js",
+  "files": [
+    "dist"
+  ],
   "scripts": {
     "test": "mocha -r @std/esm test",
     "ex": "node -r @std/esm ex/ex01-main-ex.js",
-    "exAll": "node -r @std/esm ex/runAll.js"
+    "exAll": "node -r @std/esm ex/runAll.js",
+    "build": "webpack",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
