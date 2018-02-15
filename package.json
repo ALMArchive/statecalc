@@ -11,7 +11,7 @@
     "ex": "node -r @std/esm ex/ex01-main-ex.js",
     "exAll": "node -r @std/esm ex/runAll.js",
     "build": "webpack",
-    "prepublish": "npm run build"
+    "prepublishOnly": "npm run build"
   },
   "repository": {
     "type": "git",

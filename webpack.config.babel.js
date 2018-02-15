@@ -8,7 +8,7 @@ export default {
   },
   target: 'node',
   output: {
-    library: "someLibName",
+    library: "statecalc",
     libraryTarget: "umd",
     path: path.resolve(__dirname, "dist"),
     filename: "[name].js"
