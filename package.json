@@ -1,6 +1,6 @@
 {
   "name": "statecalc",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "A simple state based calculator that mimics functionality of common desk or system calculators.",
   "main": "dist/statecalc.js",
   "files": [
