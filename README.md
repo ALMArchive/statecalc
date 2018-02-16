@@ -13,7 +13,7 @@ sequentially read sets of number or applied functions.
 
 ```javascript
 "use strict";
-const StateCalc = require("../statecalc.js");
+import StateCalc from "statecalc";
 
 let calc = new StateCalc();
 
