@@ -1,6 +1,6 @@
 {
   "name": "statecalc",
-  "version": "0.1.9",
+  "version": "0.1.11",
   "description": "A simple state based calculator that mimics functionality of common desk or system calculators.",
   "main": "dist/statecalc.js",
   "files": [
@@ -15,7 +15,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/ALMaclaine/statecalc.git"
+    "url": "git+https://github.com/ALMArchive/statecalc.git"
   },
   "keywords": [
     "State",
@@ -27,9 +27,9 @@
   "author": "Alessandro Maclaine",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/ALMaclaine/statecalc/issues"
+    "url": "https://github.com/ALMArchive/statecalc/issues"
   },
-  "homepage": "https://github.com/ALMaclaine/statecalc#readme",
+  "homepage": "https://github.com/ALMArchive/statecalc#readme",
   "devDependencies": {
     "@babel/core": "^7.0.0-beta.40",
     "@babel/polyfill": "^7.0.0-beta.40",
